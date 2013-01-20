@@ -1,12 +1,13 @@
 1. When would you use a weak entity?
-
+A weak entity would be used in an identitfying relationship.
 
 2. Is it better to use entities instead of attributes?
-
+Entities should be used more often as they are the components of the database that are unique.  Attributes are characteristics of the entities and using them as the main components of the database would make the database too large and cause duplication.
 
 3. Alter and extend the music database ER model so that it can store 
 compilations, where a compilation is an album that contains tracks by two 
 or more different artists.
+Will attach hand drawn diagram or email the hand drawn diagram.
 
 4. Create an ER diagram for an online media store using the following requirements:
  - There are two types of product: music CDs and video DVDs.
@@ -15,6 +16,8 @@ or more different artists.
    and the price. Also store the number, title, and length (in seconds) 
    of each track on the CD.
  - For each video DVD, store the title the studio name, and the price.
+Will attach hand drawn diagram or email the hand drawn diagram.
+
 
 Tables 4-1 and 4-2 contain some sample data to help you better understand 
 the requirements.
