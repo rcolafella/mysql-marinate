@@ -8,21 +8,50 @@ for artists, you want to store the names of people who have worked with the arti
 working with the artist, and when they stopped working with the artist (if they
 have done so).
 
+
+- - Adding the following columns to the artisit table:
+Worker Name, CHAR(30), using CHAR is appropriate for names since it will not contain intergers.  30 is reasonable amount of length and helps to save on space because any space not used is wasted.
+Worker Start Date, DATE in the YYYY-MM_DD format, since this coumn is not being using to calculate wages it is effective to use just the date without any time indication which would only waste space.  I am selecting the YYYY-MM-DD format to limit confusion because a worker may have worked in the recent century and/or current century.
+Worker End Date, DATE in the YYYY-MM_DD format, since this coumn is not being using to calculate wages it is effective to use just the date without any time indication which would only waste space.  I am selecting the YYYY-MM-DD format to limit confusion because a worker may have worked in the recent century and/or current century.
+
+
 For albums, you want to store the name of the album producer, when the album
 was released, and where the album was recorded. Design tables or columns that
 can store this information, and explain the advantages and disadvantages of your
 design. Choose the column types you need, explaining the advantages and disad-
 vantages of your choices.
 
+- - Adding the following columns to the album table:
+Producer Name, CHAR(30), using CHAR is appropriate for names since it will not contain intergers.  30 is reasonable amount of length and helps to save on space because any space not used is wasted.
+Album Relase Date, DATE in the YYYY-MM_DD format, time is not a factor that is considered regarding the release dates of albums so any time indication would only waste space.  I am selecting the YYYY-MM-DD format to limit confusion because an artist may have released in an album in the recent century and/or current century.
+Recording Address, VARCHAR(40), using VARCHAR is appropriate for locations because address will likely contain intergers.  
+Recording City, CHAR (30), using CHAR is appropriate for cities since it will not contain intergers.  30 is reasonable amount of length and helps to save on space because any space not used is wasted.
+Recording State, CHAR(2), using CHAR is appropriate for states since it will not contain intergers.  A state is limited to 2 characters and helps to save on space because any space not used is wasted.
+Recording Zip, SMALLINT(5) UNSIGNED, using an interger for zip code is appropriate since in the US it will only contain intergers.  Most zip codes are only 5 intergers in length and SMALLINT is limited to 5 place holders.  I added the UNSIGNED because zip code are not negative intergers.
+
+
 2. There are five types for storing temporal data: DATETIME, DATE, TIME, YEAR, and
 TIMESTAMP. Explain what each is used for, and give an example of a situation in
 which you would choose to use it. Note that http://palominodb.com/blog/2011/05/23/datetime-vs-timestamp
 has some useful information too.
 
+DATETIME - to store a date and time.  I would use this if I needed to store the date and time but did not need to have the column automatically set to the current date and time when I performed an insert or update.
+DATE - to store a 4 to 8 digit date.  I would use this for dates if I wanted flexibiltiy in the format and did not need to take up space with a time.  DATETIME is only limited to the YYYY-MM-DD format.
+TIME - to store a 3 to 7 digit time.  I would use this for times if I wanted flexibility in the format and did not need to take up sapce with a date.  TIMESTAMP is only limited to the HH:MM:SS format.
+YEAR - to store a 2 or 4 digit year, 4 is the default.  I would use this if I wanted to save on space because it only require one storeage byte.
+TIMESTAMP - to store a date and time.  I would use this if I needed to store the date and time AND needed to have the column automatically set to the current date and time when I performed an insert or update. 
+
+
 3. You’ve decided to use the AUTO_INCREMENT feature. List the three requirements that
 must be met by the column you’re applying it to.
 
+The selected column must be indexed and cannot have a DEFAULT value, and there can only be one AUTO_INCREMENT per table.
+
+
 4. Why can only one column in a table have the AUTO_INCREMENT feature?
+
+
+AUTO_INCREMENT creates a unique identifier for a row.
 
 5. Using the monitor, create a table with the following statement:
 mysql> CREATE TABLE exercise (field1 INT(3));
@@ -30,3 +59,9 @@ Using the ALTER TABLE statement, make field1 the primary key, carrying out any
 additional steps you need to make this possible. Add a second column, field2, of
 type CHAR(64) with a DEFAULT 5 clause. Create an index on a prefix of 10 characters
 from field2.
+
+CREATE TABLE exercise (field1 INT(3));
+ALTER TABLE exercise ADD PRIMARY KEY  (field 1);
+ALTER TABLE exercise ADD field2 CHAR(64) DEFAULT 5;
+ALTER TABEL exercise ADD index field2;
+ALTER TABLE exercise MODIFY field2(10);
