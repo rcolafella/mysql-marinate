@@ -1,0 +1,20 @@
+#1
+LOAD DATA INFILE 'academics.tsv' INTO TABLE details FIELDS TERMINATED BY '\t';
+
+#2
+You need to insert data using a query to alter existing data in a database.
+
+#3
+INSERT IGNORE keeps the existing data with the duplicate key and does not insert the new row but REPLACE deletes the existing row and replaces it with the 
+
+new one.
+
+#4
+The EXPLAIN output is the result of a single select using the tables supervisor, student and supervises.  The table supervisor table has a primary key.  It is 
+
+pulling all rows from the student table if they meet the limits in the where clause, which is based on the distinct rows in the supervises table.
+
+#5
+The EXPLAIN output is the result of union query using the tables played and tracked. Both table have a primary key.  It is using the combination of artist_id 
+
+column, album_id column, and track_id column in the join, and a filesort.
