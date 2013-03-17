@@ -1,0 +1,90 @@
+#1
+mysql> SELECT artist_name, album_name, COUNT(*) 
+FROM artist INNER JOIN album USING (artist_id)
+INNER JOIN track USING (artist_id,album_id)
+GROUP BY artist.artist_name, album.album_name;
+
++---------------------------+------------------------------------------+--------+
+| artist_name | album_name | COUNT(*) |
++---------------------------+------------------------------------------+--------+
+| Kylie Minogue | Light Years | 13 |
+| Miles Davis | In A Silent Way | 2 |
+| Miles Davis | Live Around The World | 11 |
+| New Order | Brotherhood | 10 |
+| New Order | Power, Corruption & Lies | 8 |
+| New Order | Retro - John McCready FAN | 15 |
+| New Order | Retro - Miranda Sawyer POP | 14 |
+| New Order | Retro - New Order / Bobby Gillespie LIVE | 15 |
+| New Order | Substance (Disc 2) | 12 |
+| New Order | Substance 1987 (Disc 1) | 12 |
+| Nick Cave & The Bad Seeds | Let Love In | 10 |
+| The Rolling Stones | Exile On Main Street | 18 |
+| The Stone Roses | Second Coming | 13 |
++---------------------------+------------------------------------------+--------+
+
+
+#2
+mysql> SELECT artist_name, album_name, count(*) FROM artist
+INNER JOIN album USING (artist_id)
+INNER JOIN track USING (artist_id,album_id)
+GROUPN BY artist.artist_name, album.album_name
+HAVING COUNT(*) > 10;
+
++--------------------+------------------------------------------+--------+
+| artist_name | album_name | COUNT(*) |
++--------------------+------------------------------------------+--------+
+| Kylie Minogue | Light Years | 13 |
+| Miles Davis | Live Around The World | 11 |
+| New Order | Retro - John McCready FAN | 15 |
+| New Order | Retro - Miranda Sawyer POP | 14 |
+| New Order | Retro - New Order / Bobby Gillespie LIVE | 15 |
+| New Order | Substance (Disc 2) | 12 |
+| New Order | Substance 1987 (Disc 1) | 12 |
+| The Rolling Stones | Exile On Main Street | 18 |
+| The Stone Roses | Second Coming | 13 |
++--------------------+------------------------------------------+--------+
+9 rows in set (0.00 sec)
+
+#3
+mysql> SELECT artist_name, album_name, tracks FROM
+(SELECT artist_name, album_name, COUNT(*) AS tracks FROM artist
+INNER JOIN album USING (artist_id)
+INNER JOIN track USING (artist_id,album_id)
+GROUP BY artist_name, album_name) AS track_count
+WHERE tracks > 10;
+
++--------------------+------------------------------------------+--------+
+| artist_name | album_name | tracks |
++--------------------+------------------------------------------+--------+
+| Kylie Minogue | Light Years | 13 |
+| Miles Davis | Live Around The World | 11 |
+| New Order | Retro - John McCready FAN | 15 |
+| New Order | Retro - Miranda Sawyer POP | 14 |
+| New Order | Retro - New Order / Bobby Gillespie LIVE | 15 |
+| New Order | Substance (Disc 2) | 12 |
+| New Order | Substance 1987 (Disc 1) | 12 |
+| The Rolling Stones | Exile On Main Street | 18 |
+| The Stone Roses | Second Coming | 13 |
++--------------------+------------------------------------------+--------+
+9 rows in set (0.00 sec)
+
+#4
+A scalar subquery returns a single value.
+SELECT artist_name FROM artist WHERE artist_id = (SELECT artist_id FROM album WHERE album_name = "Let Love In");
+A column subquery contains one or more values from a column.
+SELECT track_name FROM track WHERE time >= ALL (SELECT time FROM track);
+A row subquery contains multiple columns from multiple rows.
+SELECT album_name, album_id FROM album WHERE (album_name, album_id) IN (SELECT artist_name, artist_id FROM artist);
+A correlated subquery references a table in the outer query.
+SELECT album_name FROM album WHERE exists (select artist_id, album_id, COUNT(*) FROM track WHERE track.artist_id = album.artist_id and track.album_id 
+
+= album.album_id GROUP BY artist.artist_id, album.album_id HAVING COUNT(*) > 10);
+
+#5 
+In an INNER JOIN the process and output is driven by matched column in the tables.
+In LEFT JOIN the process and output is driven by the left table.
+In RIGHT JOIN the process and output is driven by the right table.
+No the order does not matter becuase neither side is driving.
+
+#6
+The first query produces more results than the second query.  The WHERE clause in the second is only selecting played tracks.
