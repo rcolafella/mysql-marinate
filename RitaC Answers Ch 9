@@ -1,0 +1,64 @@
+Exercises for chapter 9
+
+1) What’s the difference between a local and a remote user?
+A local user can connect to the databases or server using the same computer on which MySQL is running whereas a remote user can connect from a different computer.
+
+2) When would you grant only read access to a user?
+
+Read access is for users who need to read the data and not alter the data.  These users can run queries on the data and run data reports but they can not alter data or tables or databases.
+
+3) Write a GRANT statement to create a user, rowena, who has privileges to execute
+SELECT, UPDATE, and INSERT statements on the contacts and appointment databases.
+The user should be allowed to access the server from machines in the domain invyhome.com.
+
+mysql> GRANT SELECT, UPDATE, INSERT ON contacts.* TO 'rowena'@'*.invyhome.com';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> GRANT SELECT, UPDATE, INSERT ON appointment.* TO 'rowena'@'*.invyhome.com';
+Query OK, 0 rows affected (0.01 sec)
+
+
+4) Write a GRANT statement that modifies the privileges of the user rowena created in
+Question 3. Add privileges to SELECT from the customer table in the sales database, and to
+SELECT the debtor column from the invoice table in the accounts database.
+
+GRANT SELECT ON sales.customer to 'rowena'@'*.invyhome.com';
+
+GRANT SELECT (debtor) ON accounts.invoice to 'rowena'@'*.invyhome.com';
+
+5) Three GRANT statements have been issued on your MySQL server:
+
+GRANT ALL ON *.* TO 'hugh'@'hugh.invyhome.com';
+GRANT SELECT, UPDATE, INSERT, DELETE ON *.* TO 'hugh'@'*.invyhome.com';
+GRANT SELECT ON *.* TO ''@'localhost';
+
+ For each of the following attempts to connect to the server, state whether the connection is allowed and, if so, which user the client is connected as. Assume all connections are attempted from localhost:
+
+     a) mysql --user=hugh --host=localhost 
+
+     b) mysql --user=fred
+
+     c) mysql
+
+The first GRANT statement grants all access to the remote user hugh@invyhome.com.  All other instances are denied access.
+The second GRANT  statement grants the right to select, update, insert and delete to hugh as a remote user and local user.  Access is denied to user fred.
+The thrid GRANT  statement grants the right to select to all users.  Access is not denied to any of the users.
+
+6) You’ve been employed to evaluate the security of a MySQL installation. Assuming that you’re
+already satisfied with the security configuration from the physical and operating system
+perspective, list four things that you’d check about the MySQL server. For each item, explain
+why you would check it and what you would expect the outcome to be.
+
+I'd want to check from which computers access is being granted to.  Local access would be best for security.  If remote access is needed then it should be encrypted.  Next I'd want to check which users are being granted 
+
+access.  I'd want to make sure users are not anonymous.  Next I'd check the amount of privleges that are being granted.  For security it is best that users have the least amount of priviliages.  Do they really need to be able to 
+
+alter the database or would read access be sufficient?  Finally, I'd check what kind of privileges are being granted.  I would like to keep them narrow.  I wouldn't want to access to GRANT priviliages to just anyone.
+
+7) You’ve recently installed a wireless access point for visitors to your office and configured
+it so that machines that connect through it have IP addresses in the range 192.168.1.1 to
+192.168.1.254. You’ve decided you want users who connect to your MySQL server from those IP
+addresses to have only the SELECT privilege on the contacts database. What steps do you take
+in your MySQL privilege tables to set this up?
+
+GRANT SELECT ON contacts.* to ''@192.168.1.%';
