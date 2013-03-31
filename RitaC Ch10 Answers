@@ -1,0 +1,28 @@
+Exercises for Chapter 10
+
+1) SQL dump files are often very large; why is this generally not a cause for worry?
+There is no need to worry about the size of SQL dump files because they are only SQL statement text files which can be reduced in size before saving to a storage place.  Also a full backup of the dump is not required since 
+
+frequent incremental backups can be made by saving the binary log files.  Incremental backup are smaller and less likely to interupt user access.
+
+2) Set up a weekly backup of all databases on your server. (using a Mac)
+
+export EDITOR=pico
+crontab -e
+30 2 * * sun /usr/local/mysql/bin/mysqldump\ 
+--user=root \
+--password=password \
+--result-file=libararies\documents\mysqlbackup.txt
+
+
+3) For a production server, what time would you choose for your regular backups?
+
+I would choose to do regular backups during the weekends when users are less likely to be on since the server has to be stopped.  I would probably sometime after midnight on a weekend night.
+
+4) How can you recover modifications that have been made to your data since the last dump?
+
+To recover modification that have been made since the last data dump, one can use the MySQL binaryr logs.  The mysqlbinlog can be used to retreive all the SQL statements since the last data dump.
+
+5) For an application where any loss of data is unacceptable, how would you choose the
+location of your binary logfile?
+ I would chose to export the binary logfile to an external backup harddrive since that would give me the most control of any type of access is lost.
